@@ -58,4 +58,4 @@ pbaspect([2 1.3 1])
 
 xlabel('Time (sec) relative to stimulus onset', 'FontSize', 10, 'Fontweight', 'normal')
 ylabel('Decoding accuracy (%)', 'FontSize', 10, 'Fontweight', 'normal')
-clear Orig_hypothesis Orig_pvals Orig_signedrank Orig_zval mu sem 
+clear  

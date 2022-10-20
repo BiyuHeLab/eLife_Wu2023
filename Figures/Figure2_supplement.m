@@ -26,12 +26,6 @@ end
 clear accuracy analysis i_pair measures
 
 %% Define significant time points by comparing the original z-stats against
-% the empirical null distribution
-Orig_pval = nan(1,length(times));
-for t = 1:length(times)
-    Orig_pval(1,t) = length(find(perm_zval(:,t) > Orig_zval(1,t))) / n_perms;
-end
-
 
 % find clusters of significant time points in the original sample
 clusters_orig = find_temporal_clusters(Orig_zval(1,:),Orig_pval(1,:), 0.05);
