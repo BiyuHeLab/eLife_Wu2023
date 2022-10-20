@@ -1,5 +1,5 @@
 clear; clc;
-load('MEG_avgRDM_100Hz.mat')
+load('../Data/MEG_avgRDM_100Hz.mat')
 times = -0.5:0.01:2;
 face = 1:5; house = 6:10; object = 11:15; animal = 16:20; 
 %%

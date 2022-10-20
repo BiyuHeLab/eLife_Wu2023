@@ -3,8 +3,8 @@
 % the 40x40 group-average MEG RDM.
 
 clear; clc
-load('Fusion_MEG-MRI_Correlation.mat');
-load('Fusion_MEG-MRI_Correlation_ClusterInference.mat')
+load('../Data/Fusion_MEG-MRI_Correlation.mat');
+load('../Data/Fusion_MEG-MRI_Correlation_ClusterInference.mat')
 ROIs = fieldnames(AvgRho);
 PlotLabels = {'V1', 'V2', 'V3', 'V4', 'face', 'animal', 'house', 'object', ...
      'L IPS', 'R IPS',  'L MFG', 'R MFG', 'R IFJ', 'aPCC', 'L aInsula', 'R aInsula','R OFC', ''...

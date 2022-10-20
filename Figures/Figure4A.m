@@ -8,7 +8,7 @@ elseif strcmp(Model, 'TwoState') ==1
      YAxisLocation = 'left';
 end
 
-S = load(['Fusion_' Model 'Model_ClusterInference.mat']);
+S = load(['../Data/Fusion_' Model 'Model_ClusterInference.mat']);
 
 ROIs = {'V1', 'V2', 'V3', 'placeholder1',...
         'loc_face',  'loc_animal', 'loc_house', 'loc_object', 'placeholder2' ...

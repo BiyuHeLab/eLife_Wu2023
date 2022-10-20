@@ -1,6 +1,6 @@
 %
-load('MEG_decoding_Recognition.mat', 'accuracy')
-load('MEG_decoding_Recognition_shuffled.mat', 'perm_signedrank', 'perm_pval1')
+load('../Data/MEG_decoding_Recognition.mat', 'accuracy')
+load('../Data/MEG_decoding_Recognition_shuffled.mat', 'perm_signedrank', 'perm_pval1')
 
 times = -0.5:0.01:2;
 n_perms = 5000;
