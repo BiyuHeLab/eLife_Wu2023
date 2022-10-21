@@ -1,0 +1,24 @@
+#!/bin/bash
+
+proj_dir="/isilon/LFMI/VMdrive/data/HLTP_fMRI"
+script_dir="/isilon/LFMI/VMdrive/YuanHao/HLTP/fMRI/Scripts/FSL"
+
+for s in 1   # inputs must be between 01 and 25 
+do
+	for run in {1..15}	
+	do
+		echo "####################################################################"		
+		echo "          Model specification for block $run in sub$s               "
+		echo "####################################################################"        
+		cp $script_dir/StimIdentityGLM_template.fsf $script_dir/StimIdentityGLM_${s}_block${run}_design.fsf
+		sed -i -e "s#BLOCKNUM#block${run}#g" $script_dir/StimIdentityGLM_${s}_block${run}_design.fsf
+		sed -i -e "s#SUBNUM#${s}#g" $script_dir/StimIdentityGLM_${s}_block${run}_design.fsf
+		
+		echo "####################################################################"	
+		echo "             Model estimation for block $run in sub$s               "
+		echo "####################################################################"
+			
+		feat $script_dir/StimIdentityGLM_${s}_block${run}_design.fsf
+		rm $script_dir/StimIdentityGLM_${s}_block${run}_design.fsf
+	done
+done

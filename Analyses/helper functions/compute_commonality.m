@@ -1,5 +1,5 @@
 
-function commModel  = CommonalityAnalysis_SingleModel(megRDM,fmriRDM, modelRDM)
+function commModel  = compute_commonality(megRDM,fmriRDM, modelRDM)
  % Estimate commonality coefficient between three variables (MEG RDM from a
  % given time point, fMRI RDM from a given location, and a given conceptual
  % model).

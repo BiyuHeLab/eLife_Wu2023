@@ -1,36 +1,9 @@
 %
 load('../Data/MEG_decoding_Recognition.mat', 'accuracy')
-load('../Data/MEG_decoding_Recognition_shuffled.mat', 'perm_signedrank', 'perm_pval1')
-
+%load('../Data/MEG_decoding_Recognition_shuffled.mat', 'perm_signedrank', 'perm_pval1')
+load('../Data/MEG_decoding_Recognition_ClusterInference.mat')
 times = -0.5:0.01:2;
 n_perms = 5000;
-
-%% Run Wilcoxon test on original data
-accuracy=accuracy(1:size(accuracy,1),:);
-for i_time = 1:length(times)
-    [pval,~,stats] = signrank(accuracy(:,i_time), 0, 'tail','right');
-     Orig_signedrank(1,i_time) = stats.signedrank;
-     Orig_pval(1,i_time) = pval;
-     clear p stats
-end
-
-clusters_orig = find_temporal_clusters(Orig_signedrank(1,:),Orig_pval(1,:), 0.05);
-ClusterInference.clusters_orig = clusters_orig;
-clear clusters_orig
-
-for i_perm = 1:n_perms
-    cluster_shuffled = find_temporal_clusters(perm_signedrank(i_perm,:),perm_pval1(i_perm,:), 0.05);
-    ClusterInference.maxClusterSizes(1,i_perm) = cluster_shuffled.maxSize;
-    ClusterInference.masStatSumPos(1,i_perm) = cluster_shuffled.maxStatSumPos;
-    clear cluster_shuffled
-end
-
-maxStats = ClusterInference.maxClusterSizes;
-maxStats = sort(maxStats, 'descend');
-CritVal = maxStats(0.05*size(maxStats,2));
-SigClusters = find(ClusterInference.clusters_orig.cluster_size > CritVal);
-ClusterInference.SigTimePoint = ismember(ClusterInference.clusters_orig.cluster_timecourse, SigClusters);
-clear maxClusterSizes CritVal SigClusters
 %%
 Colors = [0 0.4470 0.7410];  
 mu = nanmean(accuracy,1);
