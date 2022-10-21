@@ -1,6 +1,6 @@
 # eLife_Wu2022
 
-Analysis scripts and codes for reproducing the figures for the manuscript Spatiotemporal neural dynamics of objeccts recognition under uncertainty in humans**
+Analysis scripts and codes for reproducing figures in the manuscript Spatiotemporal neural dynamics of objeccts recognition under uncertainty in humans
 
 Analysis was originally performed on a machine running Rehat Linux v7.8, Matlab R2017a, and Spyder 5.0.5 (Python 3.8).
 
