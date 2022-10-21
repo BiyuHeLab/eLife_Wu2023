@@ -2,21 +2,54 @@ clear; clc;
 DataDir = '/isilon/LFMI/VMdrive/YuanHao/HLTP_Fusion/MEG/decoding_data/';
 addpath('/isilon/LFMI/VMdrive/YuanHao/HLTP_Fusion/MEG/Scripts');
 
-SJs = {'AA', 'AL', 'AR', 'BJB', 'CW', 'DJ', 'EC', 'FSM'...
-    'JA', 'JC', 'JP', 'JS', 'LS', 'MC', 'NA', 'NC', 'SL', ...
+SJs = {'AA', 'AC','AL', 'AR', 'AW', 'BJB', 'CW', 'DJ', 'EC', 'FSM'...
+    'JA', 'JC', 'JP', 'JS', 'LS', 'MC', 'NA', 'NC', 'NM', 'SF ', 'SL', ...
     'SM', 'TK', 'TL'};
-%'AC', 'AW', 'NM', 'SF'
 analysis = {'1vs2', '1vs3', '1vs4', '2vs3', '2vs4', '3vs4'};
+measure = 'balanced_accuracy_minus_chance';
 times = -0.5:0.01:2;
 n_perms = 5000;
 conditions = {'rec', 'unrec'};
-measure = 'balanced_accuracy_minus_chance';
-rec = load(fullfile(DataDir, 'Main_ObjectDecodingResults_R.mat'), 'accuracy');
-unrec = load(fullfile(DataDir, 'Main_ObjectDecodingResults_U.mat'), 'accuracy');
+%% concatenate decoding accuracies yielded from all time points
+for i= 1:length(analysis)
+    for s = 1:length(SJs)
+        SubDir = fullfile(DataDir, 'RecObj', SJs{s}, ['s_ensemble_trial_5folds_' analysis{i}]);
+        timecourses = nan(1,length(times));
+        for i_time = 1:length(times)
+            curr_Dir = fullfile(SubDir, ['t' num2str(i_time, '%03.f')]);
+            load(fullfile(curr_Dir, ['res_' measure '.mat']));
+            timecourses(1,i_time) = results.(measure).output;
+            clear results curr_Dir
+        end
+        accuracy.(['class_' analysis{i}])(s,:) = timecourses(1,:);
+        clear timecourses SubDir i_time k
+    end
+end
+save(fullfile(DataDir, 'MEG_decoding_Object_R.mat'), 'accuracy')
+
+for i= 1:length(analysis)
+    for s = 1:length(SJs)
+        SubDir = fullfile(DataDir, 'UnrecObj', SJs{s}, ['s_ensemble_trial_5folds_' analysis{i}]);
+        timecourses = nan(1,length(times));
+        for i_time = 1:length(times)
+            curr_Dir = fullfile(SubDir, ['t' num2str(i_time, '%03.f')]);
+            load(fullfile(curr_Dir, ['res_' measure '.mat']));
+            timecourses(1,i_time) = results.(measure).output;
+            clear results curr_Dir
+        end
+        accuracy.(['class_' analysis{i}])(s,:) = timecourses(1,:);
+        clear timecourses SubDir i_time k
+    end
+end
+save(fullfile(DataDir, 'MEG_decoding_Object_U.mat'), 'accuracy')
 %%  Averaging across all 6 pair-wise decoding accuracies, for each subject
 % respectively.
+rec = load(fullfile(DataDir, 'MEG_decoding_Object_R.mat'), 'accuracy');
+unrec = load(fullfile(DataDir, 'MEG_decoding_Object_U.mat'), 'accuracy');
+
 DecodingScore.rec = nan(length(SJs), length(times));
 DecodingScore.unrec= nan(length(SJs), length(times));
+
 
 for s = 1:length(SJs)
     tmp1 = [];
@@ -28,12 +61,11 @@ for s = 1:length(SJs)
     DecodingScore.rec(s,:) = nanmean(tmp1,1);
     DecodingScore.unrec(s,:) = nanmean(tmp2,1);
 end
-
 clear tmp1 tmp2 rec unrec
 %% Wicoxon sign rank test on observed data
 for c = 1:length(conditions)
     for i_time = 1:length(times)
-        [pval,~,stats] = signrank(DecodingScore.(conditions{c})(1:20,i_time), 0, 'tail','right');
+        [pval,~,stats] = signrank(DecodingScore.(conditions{c})(:,i_time), 0, 'tail','right');
         Orig_pval.(conditions{c})(1,i_time) = pval;
         Orig_zval.(conditions{c})(1,i_time) = stats.zval;
         clear p h stats
@@ -57,7 +89,7 @@ for c = 1:length(conditions)
         % run Wilcoxon test on the the dataset including sign-flipped subjects
         for i_time = 1:length(times)
             [~,~,stats] = signrank(FlippedData(:,i_time), 0, 'tail','right');
-            %pvals(i_perm,i_time) = p; hypothesis(i_perm,i_time) = h;
+            pvals(i_perm,i_time) = p;
             zval.(conditions{c})(i_perm,i_time) = stats.zval; %signedrank(i_perm,i_time) = stats.signedrank;
             clear stats
         end
@@ -65,29 +97,9 @@ for c = 1:length(conditions)
     end
 end
 
-% Determine significant time point for each permutation sample
-% perm_pval.rec = nan(n_perms,length(times));
-% perm_pval.unrec = nan(n_perms,length(times));
-%
-for c = 1:length(conditions)
-    for i_perm = 1:n_perms
-        for t = 1:length(times)
-            pval.(conditions{c})(i_perm,t) = ...
-                length(find(perm_zval.(conditions{c})(:,t) > perm_zval.(conditions{c})(i_perm,t))) / n_perms;
-        end
-    end
-end
 save(fullfile(DataDir, 'MEG_decoding_Object_shuffled.mat'), 'perm_zval', 'perm_pval')
 %% Define significant time points by comparing the original z-stats against
 % the empirical null distribution
-Orig_pval.rec = nan(1,length(times));
-Orig_pval.unrec = nan(1,length(times));
-for c = 1:length(conditions)
-    for t = 1:length(times)
-        Orig_pval.(conditions{c})(1,t) =  ...
-            length(find(perm_zval.(conditions{c})(:,t) > Orig_zval.(conditions{c})(1,t))) / n_perms;
-    end
-end
 
 % find clusters of significant time points in the original sample
 for c = 1:length(conditions)
@@ -109,64 +121,16 @@ for c = 1:length(conditions)
 end
 
 %%
-ClusterStats = 'SumPos'; % 'ClusterSize', or 'SumPos'
 for c = 1:length(conditions)
-    if strcmp(ClusterStats, 'ClusterSize')
-        maxStats = ClusterInference.maxClusterSizes.(conditions{c});
-        maxStats = sort(maxStats, 'descend');
-        CritVal = maxStats(0.05*size(maxStats,2));
-        SigClusters.(conditions{c}) = find(ClusterInference.clusters_orig.(conditions{c}).cluster_size > CritVal);
-    elseif strcmp(ClusterStats, 'SumPos')
-        maxStats = ClusterInference.maxStatSumPos.(conditions{c});
-        maxStats = sort(maxStats, 'descend');
-        CritVal = maxStats(0.05*size(maxStats,2));
-        SigClusters.(conditions{c}) = find(ClusterInference.clusters_orig.(conditions{c}).cluster_statSum > CritVal);
-    end
+    maxStats = ClusterInference.maxStatSumPos.(conditions{c});
+    maxStats = sort(maxStats, 'descend');
+    CritVal = maxStats(0.05*size(maxStats,2));
+    SigClusters.(conditions{c}) = find(ClusterInference.clusters_orig.(conditions{c}).cluster_statSum > CritVal);
+    
     ClusterInference.maxStatSumPos.SigTimePoint.(conditions{c}) = ...
         ismember(ClusterInference.clusters_orig.(conditions{c}).cluster_timecourse,...
         SigClusters.(conditions{c}));
     clear maxClusterSizes CritVal SigClusters
 end
-clear Orig_zval Orig_pval perm_zval perm pval
-%%
-Colors = {
-    [0.1725 0.6275 0.1725];% green
-    [0.8392 0.1529 0.1569]}; %red
-BarPos = [7, 6.8]; 
-
-
-figure(ceil(100*rand(1)))
-% Plot group mean decoding accuracy and SEM
-for c = 1:length(conditions)
-    mu = nanmean(DecodingScore.(conditions{c}),1);
-    sem = nanstd(DecodingScore.(conditions{c}))./sqrt(size(DecodingScore.(conditions{c}),1));
-    max_score = max(mu);
-    peak.(conditions{c}) = times(find(mu==max_score));
-    shadedErrorBar(times,mu, sem, 'lineprops', {'color', Colors{c}, 'LineWidth', 2});
-    hold on
-    
-end
-
-for c = 1:length(conditions)
-    if any(ClusterInference.maxStatSumPos.SigTimePoint.(conditions{c})==1)
-        sig_time = times(ClusterInference.maxStatSumPos.SigTimePoint.(conditions{c})==1);
-        plot(sig_time, BarPos(c), 'Marker', 's',...
-            'Markersize', 4, 'MarkerFaceColor', Colors{1}, 'MarkerEdge', 'none')   
-    end
-end
-
-ax = gca;
-ax.XLim = [-0.5 2];
-ax.XTick = -0.5:0.5:2;
-ax.YLim = [-4.5 7];
-ax.YTick = -4:2:7;  
-plot(times, zeros(1, 251), 'LineStyle', '--', 'color', 'k');
-ax.YTickLabel = {'46', '48', '50', '52', '54', '56'};
-line([0 0], ax.YLim, 'color', 'k') 
-pbaspect([2 1.3 1])
-
-line([sig_time(1) sig_time(1)],ax.YLim, 'LineStyle', '--', 'color', 'k')
-legend('Rcognized', 'Unrecognized') 
-% 
-xlabel('Time (sec) relative to stimulus onset', 'FontSize', 8, 'Fontweight', 'normal')
-ylabel('Decoding Accuracy (%)', 'FontSize', 8, 'Fontweight', 'normal')
+save(fullfile(pwd, 'MEG_decoding_Object_stats.mat'), 'ClusterInference')
+clear
