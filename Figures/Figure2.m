@@ -1,8 +1,8 @@
-%PLOT FIGURE 2 A_D
+%PLOT FIGURE 2 A-D
 
 
-load('../Data/MEG_decoding_Recognition.mat', 'accuracy')
-load('../Data/MEG_decoding_Recognition_stats.mat')
+load('./Data/MEG_decoding_Recognition.mat', 'accuracy')
+load('./Data/MEG_decoding_Recognition_stats.mat')
 times = -0.5:0.01:2;
 %%
 Colors = [0 0.4470 0.7410];  
@@ -33,9 +33,9 @@ ylabel('Decoding accuracy (%)', 'FontSize', 10, 'Fontweight', 'normal')
 clear
 
 %%
-rec = load('../Data/MEG_decoding_Object_R.mat', 'accuracy');
-unrec = load('../Data/MEG_decoding_Object_U.mat', 'accuracy');
-load('../Data/MEG_decoding_Object_stats.mat', 'ClusterInference');
+rec = load('./Data/MEG_decoding_Object_R.mat', 'accuracy');
+unrec = load('./Data/MEG_decoding_Object_U.mat', 'accuracy');
+load('./Data/MEG_decoding_Object_stats.mat', 'ClusterInference');
 
 times = -0.5:0.01:2;
 analysis = {'1vs2', '1vs3', '1vs4', '2vs3', '2vs4', '3vs4'};
@@ -70,7 +70,7 @@ for i = 1:2
     
     if any(times(ClusterInference.maxStatSumPos.SigTimePoint.(conditions{i})==1))
         sig_time = times(ClusterInference.maxStatSumPos.SigTimePoint.(conditions{i})==1);
-        plot(sig_time, 9, 'Marker', 's',...
+        plot(sig_time, 7, 'Marker', 's',...
             'Markersize', 4, 'MarkerFaceColor', Colors{i}, 'MarkerEdge', 'none');
     end
 end
@@ -78,22 +78,23 @@ end
 ax = gca;
 ax.XLim = [-0.5 2];
 ax.YLim = [-4 7];
-ax.YTick = -2:2:15;
+ax.YTick = -4:2:15;
 plot(times, zeros(1, length(times)), 'LineStyle', '--', 'color', 'k');
 line([sig_time(1) sig_time(1)],ax.YLim, 'LineStyle', '--', 'color', 'k')
-ax.YTickLabel = {'46', '48', '50', '52', '54', '56'};
+ax.YTickLabel = {'46','48', '50', '52', '54', '56'};
 line([0 0], ax.YLim, 'color', 'k')
 pbaspect([2 1.3 1])
 
 xlabel('Time (sec) relative to stimulus onset', 'FontSize', 10, 'Fontweight', 'normal')
 ylabel('Decoding accuracy (%)', 'FontSize', 10, 'Fontweight', 'normal')
-clear
+%clear
 
-clear; clc;
-load('../Data/MEG_avgRDM_100Hz.mat')
+
+%%
+load('./Data/MEG_avgRDM_100Hz.mat')
 times = -0.5:0.01:2;
 face = 1:5; house = 6:10; object = 11:15; animal = 16:20; 
-%%
+%
 h = figure(ceil(100*rand(1)));
 latency = [0 0.2, 0.29, 0.47] ;
 for i = 1:length(latency)

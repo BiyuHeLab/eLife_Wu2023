@@ -49,16 +49,16 @@ printname = ['EVC', 'VTC', 'SAL', 'DAN', 'FPCN', 'DMN']
 # %% DATA PREPARATION
 
 
-comm_dict = mat73.loadmat('../Data/Fusion_Commonality.mat')
-fusion_dict = mat73.loadmat('../Data/Fusion_MEG-MRI_Correlation.mat');
+comm_dict = mat73.loadmat('./Data/Fusion_Commonality.mat')
+fusion_dict = mat73.loadmat('./Data/Fusion_MEG-MRI_Correlation.mat');
 comm_Rec = comm_dict['C']['Recognition']
 comm_TwoState = comm_dict['C']['TwoState']
 fusion = fusion_dict['AvgRho']
 del comm_dict, fusion_dict
 
-Stats = mat73.loadmat('../Data/Fusion_RecognitionModel_ClusterInference.mat')
+Stats = mat73.loadmat('./Data/Fusion_RecognitionModel_ClusterInference.mat')
 Stats_Rec= Stats['ClusterInference']['Recognition']
-Stats = mat73.loadmat('../Data/Fusion_TwoStateModel_ClusterInference.mat')
+Stats = mat73.loadmat('./Data/Fusion_TwoStateModel_ClusterInference.mat')
 Stats_TwoState = Stats['ClusterInference']['TwoState']
 del Stats
 

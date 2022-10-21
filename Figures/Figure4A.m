@@ -1,5 +1,5 @@
 % ENTER a model name
-Model = 'TwoState'; % (str) either 'Recognition' or 'TwoState'
+Model = 'Recognition'; % (str) either 'Recognition' or 'TwoState'
 if strcmp(Model, 'Recognition') ==1
     bar_color = [0.1216 0.4667 0.7059];
     YAxisLocation = 'right';
@@ -8,7 +8,7 @@ elseif strcmp(Model, 'TwoState') ==1
      YAxisLocation = 'left';
 end
 
-S = load(['../Data/Fusion_' Model 'Model_ClusterInference.mat']);
+S = load(['./Data/Fusion_' Model 'Model_ClusterInference.mat']);
 
 ROIs = {'V1', 'V2', 'V3', 'placeholder1',...
         'loc_face',  'loc_animal', 'loc_house', 'loc_object', 'placeholder2' ...
