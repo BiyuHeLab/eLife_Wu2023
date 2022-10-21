@@ -1,6 +1,6 @@
 clear; clc
-load('MEG_decoding_HighContrast.mat')
-load('MEG_decoding_HighContrast_shuffled.mat')
+load('../Data/MEG_decoding_HighContrast.mat')
+load('../Data/MEG_decoding_HighContrast_shuffled.mat')
 analysis = {'1vs2', '1vs3', '1vs4', '2vs3', '2vs4', '3vs4'};
 times = -0.1:0.01:0.8;
 n_perms = 5000; 
