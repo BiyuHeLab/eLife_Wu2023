@@ -66,4 +66,4 @@ Codes to output the presented results
 * Fusion_CommonalityAnalysis.m: main script to run commonality analysis and generate the permuation samples
 * Create_ModelVectors.m: subfunction for creating model RDMs
 * compute_commonality.m: subfunction for executing commonality analysis
-* correlation.m: subfunction for computing semipartial correlations (@author: Martin Hebart (2018, eLife)
+* correlation.m: subfunction for computing semipartial correlations (@author: Martin Hebart (2018, eLife))
