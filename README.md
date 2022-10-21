@@ -1,4 +1,4 @@
-# eLife_Wu2022
+# HLTP_Fusion_Wu2022
 
 Analysis scripts and codes for reproducing figures in the manuscript Spatiotemporal neural dynamics of objeccts recognition under uncertainty in humans
 
