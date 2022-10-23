@@ -12,10 +12,10 @@ Figures can be directly reproduced if the codes are executed wihtin the "Figure/
 
 **Figures/data/** contains all analysis outputs required to plot the figure 1,2 4, and 5 in the manuscript. 
 
-* bhv_df.pkl contains behavioral responses in the fMRI experiment.
-* percent_seen_real contains MEG subjects' recognition rates in recognized real images trials.
-* correct_seen.p contains MEG subjects' categorization accuracies in recognized real images trials.
-* correct_unseen.p contains MEG subjects' categorization accuracies in unrecognized real images trials.
+* BHV_fMRI_df.pkl contains behavioral responses in the fMRI experiment.
+* BHV_MEG_RecognitionRate_real.p contains MEG subjects' recognition rates in recognized real images trials.
+* BHV_MEG_Categorization_real_seen.p contains MEG subjects' categorization accuracies in recognized real images trials.
+* BHV_MEG_Categorization_real_unseen.p contains MEG subjects' categorization accuracies in unrecognized real images trials.
 
 * MEG_decoding_Recognition.mat contains MEG recognition outcome decoding result (Figure 2A)
 * MEG_decoding_Recognition_shuffled.mat contains permutation statistics necessary for MEG recognition decoding cluster inference.  
