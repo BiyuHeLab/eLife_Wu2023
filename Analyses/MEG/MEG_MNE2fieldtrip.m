@@ -50,5 +50,3 @@ for sj = 1:length(SJs)
         
     clear Dat_bc allExemplarERF realExemplarERF scrExemplarERF SubDir 
 end
-
-

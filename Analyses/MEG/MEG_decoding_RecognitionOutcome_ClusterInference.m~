@@ -1,7 +1,7 @@
 clear; clc;
 SJs = {'AA', 'AC', 'AL', 'AR', 'AW','BJB', 'CW', 'DJ', 'EC', 'FSM'...
     'JA', 'JC', 'JP', 'JS', 'LS', 'MC', 'NA', 'NC', 'NM', 'SF', 'SL', ...
-    'SM', 'TK', 'TL'}; 
+    'SM', 'TK', 'TL',', 'A}; 
 %
 DataDir = '/isilon/LFMI/VMdrive/YuanHao/HLTP_Fusion/MEG/decoding_data/';
 measure = 'balanced_accuracy_minus_chance';

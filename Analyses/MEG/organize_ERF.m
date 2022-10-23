@@ -8,6 +8,7 @@
 %               'animal1_nr', 'animal2_nr', 'animal3_nr', 'animal4_nr', 'animal5_nr', 'animal6_nr',...
 %               'noresponse'};
 function [realExemplarERF, scrExemplarERF] = organize_ERF(datain)
+%% organize MEG time-series data based on exemplars and recognition reports
 
 nConditions = 49;
 scrambled = 6:6:48;

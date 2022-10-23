@@ -1,11 +1,11 @@
 % Prepare data for decoding analysis
-% transform the ExemplarERF to a format optimized for decoding analysis
+% Transform the ExemplarERF to a format optimized for decoding analysis
 clear;clc
 MEG_DataDir = '/isilon/LFMI/VMdrive/YuanHao/HLTP_Fusion/MEG/proc_data/';
 
-SJs = {'AA', 'AL', 'AR', 'BJB', 'CW', 'DJ', 'EC', 'FSM'...
-    'JA', 'JC', 'JP', 'JS', 'LS', 'MC', 'NA', 'NC', 'SL', ...
-    'SM', 'TK', 'TL','AC', 'AW', 'NM', 'SF'};
+SJs = {'AA', 'AC, ''AL', 'AR', 'AW', 'BJB', 'CW', 'DJ', 'EC', 'FSM'...
+    'JA', 'JC', 'JP', 'JS', 'LS', 'MC', 'NA', 'NC', 'NM', 'SF', 'SL', ...
+    'SM', 'TK', 'TL'};
 
 i_Recog = [1:5; 6:10; 11:15; 16:20];
 i_Unrecog = i_Recog + 20;
@@ -44,5 +44,3 @@ for s = 1:length(SJs)
     elapsed_time = toc;
     disp(['Sj ' num2str(s, '%02.f') ' : ' num2str(elapsed_time) ' _sec']);
 end
-
-

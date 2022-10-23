@@ -10,7 +10,7 @@ SJs = {'AA', 'AC', 'AL', 'AR', 'AW,', 'BJB', 'CW', 'DJ', 'EC', 'FSM'...
     'JA', 'JC', 'JP', 'JS', 'LS', 'MC', 'NA', 'NC', 'NM', 'SL', ...
     'SF', 'SM', 'TK', 'TL'};
 
-class = {'seen', 'unseen'}; %'House'; , 'Animal'};
+class = {'seen', 'unseen'};
 obj = {'Face', 'House', 'Object', 'Animal'};
 times = -0.5:0.01:2;
 %%
