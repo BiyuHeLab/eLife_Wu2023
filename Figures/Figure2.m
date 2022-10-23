@@ -1,6 +1,6 @@
 %PLOT FIGURE 2 A-D
 
-
+addpath('./helper functions')
 load('./Data/MEG_decoding_Recognition.mat', 'accuracy')
 load('./Data/MEG_decoding_Recognition_stats.mat')
 times = -0.5:0.01:2;
@@ -87,11 +87,10 @@ pbaspect([2 1.3 1])
 
 xlabel('Time (sec) relative to stimulus onset', 'FontSize', 10, 'Fontweight', 'normal')
 ylabel('Decoding accuracy (%)', 'FontSize', 10, 'Fontweight', 'normal')
-%clear
-
-
 %%
 load('./Data/MEG_avgRDM_100Hz.mat')
+map = viridis;
+
 times = -0.5:0.01:2;
 face = 1:5; house = 6:10; object = 11:15; animal = 16:20; 
 %
@@ -105,7 +104,7 @@ for i = 1:length(latency)
     imagesc(avgRDM);
     title([num2str(times(t)*1000) ' ms'], 'FontWeight', 'normal', 'FontSize', 10)
     pbaspect([1 1 1])
-    %colorbar
+    colormap(map)
     ax = gca;
     ax.XTickLabel = '';
     ax.YTickLabel = '';
@@ -118,6 +117,11 @@ for i = 1:length(latency)
     set(gca, 'PlotBoxAspectRatio', [1 1 1])
 end
 %%
+Colors = {[0.1216 0.4687 0.7059];
+    [1 0.4980 0.0549];
+    [0.1725 0.6275 0.1725];
+    [0.8392 0.1529 0.1569]};
+
 h = figure(ceil(100*rand(1)));
 for i = 1:length(latency)
         t = find(abs(times-latency(i)) < 0.0001);
@@ -127,16 +131,16 @@ for i = 1:length(latency)
       
         subplot(1,4,i)
         %seen stimuli
-        h = scatter(Y(face,1), Y(face,2), 'o', 'MarkerFaceColor', [1 0 0], 'MarkerEdgeColor', 'none'); %red
+        h = scatter(Y(face,1), Y(face,2), 'o', 'MarkerFaceColor', Colors{1}, 'MarkerEdgeColor', 'none'); %red
         hold on
-        scatter(Y(animal,1), Y(animal,2), 'o', 'MarkerFaceColor', [1 0.5 0], 'MarkerEdgeColor', 'none') %orange
-        scatter(Y(house,1), Y(house,2), 'o', 'MarkerFaceColor', [0 0.8 0.8], 'MarkerEdgeColor', 'none') %turquioise
-        scatter(Y(object,1), Y(object,2), 'o', 'MarkerFaceColor', [0 0 0.8], 'MarkerEdgeColor', 'none') %blue
+        scatter(Y(animal,1), Y(animal,2), 'o', 'MarkerFaceColor', Colors{2}, 'MarkerEdgeColor', 'none') %orange
+        scatter(Y(house,1), Y(house,2), 'o', 'MarkerFaceColor', Colors{3}, 'MarkerEdgeColor', 'none') %turquioise
+        scatter(Y(object,1), Y(object,2), 'o', 'MarkerFaceColor', Colors{4}, 'MarkerEdgeColor', 'none') %blue
         %unseen stmuli
-        scatter(Y(face+20,1), Y(face+20,2), 'o', 'MarkerFaceColor', 'none', 'MarkerEdgeColor', [1 0 0]);
-        scatter(Y(animal+20,1), Y(animal+20,2), 'o', 'MarkerFaceColor', 'none', 'MarkerEdgeColor', [1 0.5 0])
-        scatter(Y(house+20,1), Y(house+20,2), 'o', 'MarkerFaceColor', 'none', 'MarkerEdgeColor', [0 0.8 0.8])
-        scatter(Y(object+20,1), Y(object+20,2), 'o', 'MarkerFaceColor', 'none', 'MarkerEdgeColor', [0 0 0.8])
+        scatter(Y(face+20,1), Y(face+20,2), 'o', 'MarkerFaceColor', 'none', 'MarkerEdgeColor', Colors{1});
+        scatter(Y(animal+20,1), Y(animal+20,2), 'o', 'MarkerFaceColor', 'none', 'MarkerEdgeColor', Colors{2})
+        scatter(Y(house+20,1), Y(house+20,2), 'o', 'MarkerFaceColor', 'none', 'MarkerEdgeColor', Colors{3})
+        scatter(Y(object+20,1), Y(object+20,2), 'o', 'MarkerFaceColor', 'none', 'MarkerEdgeColor', Colors{4})
     
     set(gca, 'PlotBoxAspectRatio', [1 1 1])
     set(gca,'XLim',[-0.8,0.8])

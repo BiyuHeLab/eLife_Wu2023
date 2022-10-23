@@ -6,7 +6,7 @@ Created on Mon Jul  4 14:44:48 2022
 Statistics and plots for recognition and categorization behavior in MEG and 
 fMRI experiment (FIG 1C and D)  
 @author: wuy19
-LAst Update: 10/20/2022
+Last Update: 10/20/2022
 """
 
 import matplotlib.pyplot as plt
@@ -22,10 +22,10 @@ matplotlib.rcParams['svg.fonttype'] = 'none'
 ############################################################################## 
 
 #subset data by recognition report
-MEG_seen = pd.read_pickle('./Data/percent_seen_real.p')
-MEG_unseen = pd.read_pickle('./Data/percent_seen_real.p')   
+MEG_seen = pd.read_pickle('./Data/BHV_MEG_RecognitionRate_real.p')
+#MEG_unseen = pd.read_pickle('./Data/percent_seen_real.p')   
 
-fMRI_bhv = pd.read_pickle('./Data/bhv_df.pkl')   
+fMRI_bhv = pd.read_pickle('./Data/BHV_fMRI_df.pkl')   
 proportion_R = fMRI_bhv.groupby(['real', 'subject'])['R'].mean()
 fMRI_seen = 100. * proportion_R.xs(1, level='real').values
 del proportion_R    
@@ -58,8 +58,8 @@ print("")
 
     
 # subset data by categorization behavior 
-MEG_correct_R = pd.read_pickle('./Data/correct_seen.p')
-MEG_correct_U = pd.read_pickle('./Data/correct_unseen.p')
+MEG_correct_R = pd.read_pickle('./Data/BHV_MEG_Categorization_real_seen.p')
+MEG_correct_U = pd.read_pickle('./Data/BHV_MEG_Categorization_real_unseen.p')
 df_MEG_R = pd.DataFrame(data=MEG_correct_R, columns= ['performance'])
 df_MEG_R['modality'] = 'MEG'
 df_MEG_R['report'] = 'R'
