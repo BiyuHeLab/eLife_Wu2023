@@ -21,15 +21,10 @@ matplotlib.rcParams['svg.fonttype'] = 'none'
 # STATISTICS ON BEHAVIOR
 ############################################################################## 
 
-#subset data by recognition report
+#Load recognition report data
 MEG_seen = pd.read_pickle('./Data/BHV_MEG_RecognitionRate_real.p')
-#MEG_unseen = pd.read_pickle('./Data/percent_seen_real.p')   
-
-fMRI_bhv = pd.read_pickle('./Data/BHV_fMRI_df.pkl')   
-proportion_R = fMRI_bhv.groupby(['real', 'subject'])['R'].mean()
-fMRI_seen = 100. * proportion_R.xs(1, level='real').values
-del proportion_R    
-    
+fMRI_seen = pd.read_pickle('./Data/BHV_fMRI_RecognitionRate_real.p') 
+  
 df_MEG = pd.DataFrame(data=MEG_seen, columns= ['performance'])
 df_MEG['modality'] = 'MEG'
 df_fMRI = pd.DataFrame(data=fMRI_seen, columns= ['performance'])
@@ -57,7 +52,7 @@ print("")
 
 
     
-# subset data by categorization behavior 
+# Load categorization data 
 MEG_correct_R = pd.read_pickle('./Data/BHV_MEG_Categorization_real_seen.p')
 MEG_correct_U = pd.read_pickle('./Data/BHV_MEG_Categorization_real_unseen.p')
 df_MEG_R = pd.DataFrame(data=MEG_correct_R, columns= ['performance'])
@@ -68,12 +63,8 @@ df_MEG_U['modality'] = 'MEG'
 df_MEG_U['report'] = 'U'
 
       
-correct_pd_group = fMRI_bhv.groupby(['recognition', 'real', 'subject'
-                                   ])['correct'].mean()
-fMRI_correct_R = 100. * correct_pd_group.xs((1, 1), 
-                                    level=('recognition','real')).values
-fMRI_correct_U = 100. * correct_pd_group.xs((-1, 1), 
-                                    level=('recognition','real')).values
+fMRI_correct_R = pd.read_pickle('./Data/BHV_fMRI_Categorization_real_seen.p')
+fMRI_correct_U = pd.read_pickle('./Data/BHV_fMRI_Categorization_real_unseen.p')
 df_fMRI_R = pd.DataFrame(data=fMRI_correct_R, columns= ['performance'])
 df_fMRI_R['modality'] = 'fMRI'
 df_fMRI_R['report'] = 'R'
@@ -112,7 +103,7 @@ rate = df_fMRI_R['performance'].mean()
 sem = (df_fMRI_R['performance'].std(ddof=1)) / np.sqrt(df_fMRI_R['performance'].shape[0]) 
 w, p = stats.wilcoxon(x=df_fMRI_R['performance']-25, alternative="greater")
 print("")
-print("fMRI categorization accuracy for recognized real images  :  : " + str(np.round(rate,1)) + "% SEM: " + str(np.round(sem,1)))
+print("fMRI categorization accuracy for recognized real images  : " + str(np.round(rate,1)) + "% SEM: " + str(np.round(sem,1)))
 print("Wilcoxon signed rank test chance: W:" + str(w), ", p-val: " + str(p))
 print("")
 
