@@ -42,7 +42,7 @@ EVC = ['V1', 'V2', 'V3']
 VTC = ['animal', 'face', 'house', 'object']
 SAL = ['L aInsula', 'R aInsula'] 
 DAN = ['R IFJ', 'L IPS', 'R IPS']    
-FPCN = ['L MFG', 'R MFG', 'aPCC', 'R OFC']
+FPCN = ['L MFG', 'R MFG', 'R OFC','aPCC']
 DMN = ['L AG', 'R AG', 'PCC', 'mPFC',  'L SFG', 'R SFG']
 printname = ['EVC', 'VTC', 'SAL', 'DAN', 'FPCN', 'DMN']
 
@@ -87,7 +87,6 @@ for model in ["Recognition", "TwoState"]:
         del df_ROI, tmp
     del data, sig
 del Stats_Rec, Stats_TwoState, comm_Rec, comm_TwoState, i, r
-
 
 # select poststimulus only
 df_all_poststimulus = df[(df['time'] >=0)]
@@ -154,12 +153,14 @@ for i, network in enumerate([EVC, VTC, SAL, DAN, FPCN, DMN]):
     
 # FIGURE 5-SUPPLEMENT 1
 for i, network in enumerate([EVC, VTC, SAL, DAN, FPCN, DMN]):
+    data = df_all_poststimulus[(df_all_poststimulus['ROI'].isin(network)) & \
+                                  (df_all_poststimulus['Model']=='Recognition')]
+    data['ROI'] = pd.CategoricalIndex(data['ROI'], ordered=True, categories=network)    
+    data = data.sort_values(['ROI'])   
     fig, ax = plt.subplots(figsize=(2, 2))    
     ax = sns.pointplot(x='Half', y = 'Explained variance', hue = 'ROI',
                        estimator=np.median, alpha=0.5, ci=None, errwidth=1, 
-                       capsize=0.1,linestyles='-', marker=None, 
-        data = df_all_poststimulus[(df_all_poststimulus['ROI'].isin(network)) & \
-                                  (df_all_poststimulus['Model']=='Recognition')])
+                       capsize=0.1,linestyles='-', marker=None, data = data)
     ax = sns.pointplot(x='Half', y = 'Explained variance',
         hue = 'ROI', estimator=np.median, alpha=0.5, ci=None,
         errwidth=1, capsize=0.1, linestyles='--', marker = None,
@@ -175,7 +176,9 @@ for i, network in enumerate([EVC, VTC, SAL, DAN, FPCN, DMN]):
     ax.set_ylabel('% of explained MEG-fMRI variance', fontsize=7)
     plt.title(printname[i], fontdict={'weight': 'bold', 'size': 7})
     plt.xticks(rotation = 0)
-    ax.get_legend().remove()
+    h,l = ax.get_legend_handles_labels()
+    plt.legend(h[0:len(network)],l[0:len(network)], bbox_to_anchor=(1.02, 0.85),
+               loc='upper left', borderaxespad=0, fontsize=7)
     plt.show()
     plt.clf()
 
