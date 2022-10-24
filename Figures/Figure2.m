@@ -152,3 +152,4 @@ for i = 1:length(latency)
 
     clear avgRDM Y
 end
+clear
