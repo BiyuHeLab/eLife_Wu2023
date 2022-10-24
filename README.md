@@ -7,15 +7,27 @@ Analysis was originally performed on a machine running Redhat Linux v7.8, Matlab
 ## Contents
 
 ### **Figures/**
-Data and code to reproduce the figures.
-Figures can be directly reproduced if the codes are executed wihtin the "Figure/" folder.
+Instruction for Use:
+1. Unzip package
+2. To plot figures, go to the directory "Figures" and execute scripts from that directory.
 
-**Figures/data/** contains all analysis outputs required to plot the figure 1,2 4, and 5 in the manuscript. 
+Figure1.py plots behavioral results shown in Figure 1C and D. (requires a Python IDE such as Spyder or PyCharm)
+Figure2.m plots MEG main task decoding results, RDMs, and MDS shown in Figure 2 (requires Matlab)
+Figure2_supplement.m plots MEG localizer decoding results shown in Supplementary Figure 1 (Matlab)
+Figure3_supplements.m plots MEG-fMRI correlations shown in Supplementary Figures 2-4 (Matlab)
+Figure4A.m plots commonality results shown in Figure 4A (Matlab)
+Figure4B_and_supplments.m plots commonality results shown in Figure 4b and Supplementary Figures 5-7 (Matlab)
+Figure5_and_supplements.py plots ANOVA results shown in Figure 5 and Supplementary Figure 8 (Python IDE)  
 
-* BHV_fMRI_df.pkl contains behavioral responses in the fMRI experiment.
+
+**Figures/data/** contains analysis outputs required to plot all figure in the manuscript. 
+
 * BHV_MEG_RecognitionRate_real.p contains MEG subjects' recognition rates in recognized real images trials.
 * BHV_MEG_Categorization_real_seen.p contains MEG subjects' categorization accuracies in recognized real images trials.
 * BHV_MEG_Categorization_real_unseen.p contains MEG subjects' categorization accuracies in unrecognized real images trials.
+* BHV_fMRI_RecognitionRate_real.p contains fMRI subjects' recognition rates in recognized real images trials.
+* BHV_fMRI_Categorization_real_seen.p contains fMRI subjects' categorization accuracies in recognized real images trials.
+* BHV_fMRI_Categorization_real_unseen.p contains fMRI subjects' categorization accuracies in unrecognized real images trials.
 
 * MEG_decoding_Recognition.mat contains MEG recognition outcome decoding result (Figure 2A)
 * MEG_decoding_Recognition_shuffled.mat contains permutation statistics necessary for MEG recognition decoding cluster inference.  
@@ -26,13 +38,13 @@ Figures can be directly reproduced if the codes are executed wihtin the "Figure/
 * MEG_decoding_Object_shuffled.mat contains permutation statistics necessary for MEG object category decoding cluster inference.  
 * MEG_decoding_Object_stats.mat contains cluster-level statistics for MEG object category decoding.
 
-* MEG_decoding_Localizer_.mat conatains obejct category decoding result for the MEG localizer block (Figure 2-supplement 1)
+* MEG_decoding_Localizer_.mat conatains obejct category decoding result for the MEG localizer block (Supplementary Figure 1)
 * MEG_decoding_Localizer_shuffled.mat contains permutation statistics necessary for MEG object category localizer decoding cluster inference. 
 
-* MEG_avgRDM_100Hz.mat contains group-average MEG RDMs for time points corresponding to Figure 2C and D     
+* MEG_RDM.mat contains subjects' and group-average MEG RDMs for time points corresponding to Figure 2C and D     
 
-* Fusion_Commonality.mat contains commonality coefficients for all ROIs included in the analysis (Figure 4 and 5).  
-* Fusion_MEG-MRI Correlation.mat contains the bivariate correlations (Spearman's rho) between MEG and fMRI RDMs 
+* Fusion_Commonality.mat contains commonality coefficients for all ROIs included in the analysis (Figure 4, 5, Supplementary Figures 5-8).  
+* Fusion_MEG-MRI Correlation.mat contains the bivariate correlations (Spearman's rho) between MEG and fMRI RDMs (Supplementary Figures 2-4) 
 * Fusion_RecognitionModel_ClusterInference.mat contains cluster-level statistics for commonality coefficients corresponding to the recognition model  
 * Fusion_TwoStateModel_ClusterInference.mat contains cluster-level statistics for commonality coefficients corresponding to the recognition model 
 
