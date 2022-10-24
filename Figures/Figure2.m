@@ -88,7 +88,7 @@ pbaspect([2 1.3 1])
 xlabel('Time (sec) relative to stimulus onset', 'FontSize', 10, 'Fontweight', 'normal')
 ylabel('Decoding accuracy (%)', 'FontSize', 10, 'Fontweight', 'normal')
 %%
-load('./Data/MEG_RDM_100Hz.mat', 'AvgData')
+load('./Data/MEG_RDM.mat', 'AvgData')
 map = viridis;
 
 times = -0.5:0.01:2;
