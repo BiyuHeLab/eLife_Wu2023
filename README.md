@@ -11,13 +11,13 @@ Instruction for Use:
 1. Unzip package
 2. To plot figures, go to the directory "Figures" and execute scripts from that directory.
 
-Figure1.py plots behavioral results shown in Figure 1C and D. (requires a Python IDE such as Spyder or PyCharm)
-Figure2.m plots MEG main task decoding results, RDMs, and MDS shown in Figure 2 (requires Matlab)
-Figure2_supplement.m plots MEG localizer decoding results shown in Supplementary Figure 1 (Matlab)
-Figure3_supplements.m plots MEG-fMRI correlations shown in Supplementary Figures 2-4 (Matlab)
-Figure4A.m plots commonality results shown in Figure 4A (Matlab)
-Figure4B_and_supplments.m plots commonality results shown in Figure 4b and Supplementary Figures 5-7 (Matlab)
-Figure5_and_supplements.py plots ANOVA results shown in Figure 5 and Supplementary Figure 8 (Python IDE)  
+Figure1.py plots behavioral results shown in Figure 1C and D. (requires a Python IDE such as Spyder or PyCharm)  
+Figure2.m plots MEG main task decoding results, RDMs, and MDS shown in Figure 2 (requires Matlab)  
+Figure2_supplement.m plots MEG localizer decoding results shown in Supplementary Figure 1 (Matlab)  
+Figure3_supplements.m plots MEG-fMRI correlations shown in Supplementary Figures 2-4 (Matlab)  
+Figure4A.m plots commonality results shown in Figure 4A (Matlab)  
+Figure4B_and_supplments.m plots commonality results shown in Figure 4b and Supplementary Figures 5-7 (Matlab)  
+Figure5_and_supplements.py plots ANOVA results shown in Figure 5 and Supplementary Figure 8 (Python IDE)    
 
 
 **Figures/data/** contains analysis outputs required to plot all figure in the manuscript. 
@@ -61,8 +61,8 @@ Codes to output the presented results
 * MEG_prepareDataForDecoding.m: reorganize the data for decoding analysis 
 * MEG_decoding_RecognitionOutcomes.m: perform recognition outcome decoding
 * MEG_decoding_RecognitionOutcomes_ClusterInference.m: perform cluster inference for recognition outcome decoding
-* MEG_decoding_object.m: perform object category decoding in the main task
-* MEG_decoding_object_ClusterInfernce.m: perform cluster inference for object category decoding in the main task
+* MEG_decoding_Object.m: perform object category decoding in the main task
+* MEG_decoding_Object_ClusterInfernce.m: perform cluster inference for object category decoding in the main task
 * import_mne_epochs.m: subfunction for MEG_MNE2fieldtrip.m
 * organize_ERF.m: subfunction for MEG_MNE2fieldtrip.m
 
