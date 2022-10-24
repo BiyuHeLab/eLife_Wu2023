@@ -36,7 +36,7 @@ tylim = tytick([1 end]);
 bar_pos = [0.19, 0.17];
 
  for r = 1:length(PlotLabels)
-    h = figure(round(100*rand(1)));
+    h = figure(r);
     hold on
     
     ha = gca;
