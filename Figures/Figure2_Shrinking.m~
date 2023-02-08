@@ -73,4 +73,4 @@ ax.YTick = ax.YLim(1):0.2:ax.YLim(2);
 plot(times, ones(1, length(times)), 'LineWidth', 1, 'Color', 'k', 'LineStyle', '--')
 line([0 0],ax.YLim,  'LineWidth', 1, 'Color', 'k')
 xlabel('time (sec)')
-ylabel('1 - Pearson''s r')
+ylabel('1-Pearso')
