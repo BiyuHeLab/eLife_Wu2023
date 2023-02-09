@@ -44,10 +44,15 @@ EVs = load(cope_list); EVs = EVs.EVs;
 SJs = {'01' '04' '05' '07' '08' '09' '11' '13' '15' '16' '18' '19' '20'...
    '22' '25' '26' '29' '30' '31' '32' '33' '34' '35' '37' '38'};
 %% Get data from ROIs from each condion in each block
-for subj = 5:length(SJs) 
+for subj = 1:length(SJs) 
     SubEVs = EVs.(['sub' SJs{subj}]);
     for k = 1%:length(ROIs)
-        [beta_hat, RoiSize] = fMRI_get_roi_data(SJs{subj}, SubEVs, UserOptions, MaskName{k}); 
+        [beta_hat, RoiSize] = fMRI_get_roi_data(SJs{subj}, SubEVs, UserOptions, MaskName{k});
+         beta_hat(49) = [];          % discard no-response trials
+        % put scr imgs to condition 41-48 
+        scr_imgs = beta_hat(1,6:6:48); 
+        beta_hat(6:6:48) = [];
+        beta_hat(41:48) = scr_imgs;
         save(fullfile(UserOptions.TargetDir, ['sub' SJs{subj}], 'Betas', ['active_' ROIs{k} '.mat']), 'beta_hat', 'RoiSize');
         clear  clear beta_hat real_beta RoiSize scr_beta Sw_hat u_hat z_data       
     end
