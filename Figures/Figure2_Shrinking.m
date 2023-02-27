@@ -38,20 +38,19 @@ for i_time = 1:length(times)
     clear p h stats
 end
 %%
-colors = {
-    [0.4660 0.6740 0.1880];% green
-    [0.6350 0.0780 0.1840];% red
+colors = {[0.1725 0.6275 0.1725]; %green
+    [0.8382, 0.1529, 0.1569];% red
     [0.8500 0.3250 0.0980]}; %red-orange
 BarPos = [0.5, 0.47, 0.44];
 
 figure(round(100*rand(1)))
 for c = 1:length(conditions)
-    mu(c,:) = nanmean(SubRDMs.(conditions{c}),2);
-    SE(c,:) = nanstd(SubRDMs.(conditions{c})')./sqrt(size(Subjects,3));
+    mu = nanmean(SubRDMs.(conditions{c}),2);
+    SE = nanstd(SubRDMs.(conditions{c})')./sqrt(size(Subjects,3));
     if c==1
-        y1 = shadedErrorBar(times, smooth(mu(c,:),1), SE(c,:), 'lineprops', {'color', colors{c}, 'LineWidth', 2});      
+        y1 = shadedErrorBar(times, mu, SE, 'lineprops', {'color', colors{c}, 'LineWidth', 2});      
     elseif c==2
-         y2 = shadedErrorBar(times, smooth(mu(c,:),1), SE(c,:), 'lineprops', {'color', colors{c}, 'LineWidth', 2});   
+         y2 = shadedErrorBar(times, mu, SE, 'lineprops', {'color', colors{c}, 'LineWidth', 2});   
     end
      hold on
 %     if ~isempty(times(ClusterInference.(conditions{c}).SigTimePoint))
