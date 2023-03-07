@@ -1,22 +1,32 @@
-%PLOT FIGURE 2 A-E
-
+%% PLOT FIGURE 2 A-E
+% @author: Yuan-hao Wu
+% Last update: 3/6/2023
+clc; clear
 addpath('./helper functions')
+
+% General parameters
+times = -0.5:0.01:2;
+n_subjects = 24;
+times = -0.5:0.01:2;
+conditions = {'rec', 'unrec'};
+Colors = {[0.1725 0.6275 0.1725],...
+          [0.8382, 0.1529, 0.1569]}; 
+blue = [0 0.2 0.4];
+%% Figure 2A Recognition outcome decoding
 load('./Data/MEG_decoding_Recognition.mat', 'accuracy')
 load('./Data/MEG_decoding_Recognition_stats.mat')
-times = -0.5:0.01:2;
-%% 2A Recognition outcome decoding
-Colors = [0 0.2 0.4];  
+
 mu = nanmean(accuracy,1);
-sem = nanstd(accuracy,1)./sqrt(size(accuracy,1));
+sem = nanstd(accuracy,1)./sqrt(n_subjects);
 
 figure;hold on
 shadedErrorBar(times,smooth(mu,3), smooth(sem,3), 'lineprops', {'color', ...
-    Colors, 'LineWidth', 1});
+    blue, 'LineWidth', 1.5});
 
 if any(times(ClusterInference.SigTimePoint==1))
     sig_time = times(ClusterInference.SigTimePoint==1);
     plot(sig_time, 9, 'Marker', 's',...
-        'Markersize', 4, 'MarkerFaceColor', Colors, 'MarkerEdge', 'none');
+        'Markersize', 4, 'MarkerFaceColor', blue, 'MarkerEdge', 'none');
 end
 ax = gca;
 ax.XLim = [-0.5 2];
@@ -27,19 +37,18 @@ line([sig_time(1) sig_time(1)],ax.YLim, 'LineStyle', '--', 'color', 'k')
 ax.YTickLabel = {'', '50', '52', '54', '56', '58'};
 line([0 0], ax.YLim, 'color', 'k')
 pbaspect([2 1.3 1])
-
 xlabel('Time (sec) relative to stimulus onset', 'FontSize', 10, 'Fontweight', 'normal')
 ylabel('Decoding accuracy (%)', 'FontSize', 10, 'Fontweight', 'normal')
-clear
+
+clear ax accuracy ClusterInference mu sem sig_time
 
 %% 2B Category decoding
 rec = load('./Data/MEG_decoding_Object_R.mat', 'accuracy');
 unrec = load('./Data/MEG_decoding_Object_U.mat', 'accuracy');
 load('./Data/MEG_decoding_Object_stats.mat', 'ClusterInference');
 
-times = -0.5:0.01:2;
 analysis = {'1vs2', '1vs3', '1vs4', '2vs3', '2vs4', '3vs4'};
-conditions = {'rec', 'unrec'};
+
 % Averaging across all 6 pair-wise decoding accuracies, for each subject
 % respectively.
 DecodingScore.rec = nan(size(rec.accuracy.class_1vs2,1), length(times));
@@ -57,16 +66,15 @@ for s = 1:size(rec.accuracy.class_1vs2,1)
 end
 clear tmp1 tmp2 rec unrec
 
-Colors = {[0.1725 0.6275 0.1725],...
-    [0.8382, 0.1529, 0.1569]};  
+ 
 figure;
-for i = 1:2
+for i = 1:length(conditions)
     mu = nanmean(DecodingScore.(conditions{i}),1);
-    sem = nanstd(DecodingScore.(conditions{i}),1)./sqrt(size(DecodingScore.(conditions{i}),1));
+    sem = nanstd(DecodingScore.(conditions{i}),1)./sqrt(n_subjects);
     
     hold on
     shadedErrorBar(times, mu, sem, 'lineprops', {'color',...
-         Colors{i}, 'LineWidth', 1});
+         Colors{i}, 'LineWidth', 1.5});
     
     if any(times(ClusterInference.maxStatSumPos.SigTimePoint.(conditions{i})==1))
         sig_time = times(ClusterInference.maxStatSumPos.SigTimePoint.(conditions{i})==1);
@@ -85,23 +93,24 @@ ax.YTickLabel = {'46','48', '50', '52', '54', '56'};
 line([0 0], ax.YLim, 'color', 'k')
 pbaspect([2 1.3 1])
 
-xlabel('Time (sec) relative to stimulus onset', 'FontSize', 10, 'Fontweight', 'normal')
+xlabel('Time (s) relative to stimulus onset', 'FontSize', 10, 'Fontweight', 'normal')
 ylabel('Decoding accuracy (%)', 'FontSize', 10, 'Fontweight', 'normal')
-clear
+
+clear analysis ax ClusterInference DecodingScore i i_pair mu ss sem sig_time
+
 %% 2C RDMs at different latencies 
 load('./Data/MEG_RDM.mat', 'AvgData')
 map = viridis;
+face = 1:5; house = 6:10; object = 11:15; animal = 16:20;
+latencies = [0 0.2, 0.29, 0.47] ;
 
-times = -0.5:0.01:2;
-face = 1:5; house = 6:10; object = 11:15; animal = 16:20; 
-%
-figure(ceil(100*rand(1)));
-latency = [0 0.2, 0.29, 0.47] ;
-for i = 1:length(latency)
-    t = find(abs(times-latency(i)) < 0.0001);
+
+figure
+for i = 1:length(latencies)
+    t = find(abs(times-latencies(i)) < 0.0001);
     
     avgRDM = squareform(AvgData(t,:));
-    subplot(1,4,i)
+    subplot(1,length(latencies),i)
     imagesc(avgRDM);
     title([num2str(times(t)*1000) ' ms'], 'FontWeight', 'normal', 'FontSize', 10)
     pbaspect([1 1 1])
@@ -123,14 +132,14 @@ Colors = {[0.1216 0.4687 0.7059];
     [0.1725 0.6275 0.1725];
     [0.8382, 0.1529, 0.1569]};
 
-figure(ceil(100*rand(1)));
-for i = 1:length(latency)
-        t = find(abs(times-latency(i)) < 0.0001);
+figure
+for i = 1:length(latencies)
+        t = find(abs(times-latencies(i)) < 0.0001);
       
         avgRDM = squareform(AvgData(t,:));
         Y = mdscale(avgRDM, 2);
       
-        subplot(1,4,i)
+        subplot(1,length(latencies),i)
         %seen stimuli
         scatter(Y(face,1), Y(face,2), 'o', 'MarkerFaceColor', Colors{1}, 'MarkerEdgeColor', 'none'); %blue
         hold on
@@ -153,61 +162,40 @@ for i = 1:length(latency)
 
     clear avgRDM Y
 end
-%clear
+clear animal AvgData ax Colors face house i latencies map object s t
 %% 2E Across-image dissimilarity for recognized and unrecognized trials
-clear; clc;
-
-%addpath('./helper functions')
 load('./Data/MEG_RDM.mat', 'Subjects')
+%load('./Data/MEG_decoding_Object_stats.mat', 'ClusterInference');
 
-times = -0.5:0.01:2;
 conditions = {'seen', 'unseen', 'difference'};
+Colors = {[0.1725 0.6275 0.1725]; %green
+          [0.8382, 0.1529, 0.1569];% red
+          [0 0.2 0.4]}; %blue
+BarPos = [0.5, 0.47, 0.44];
 
-SubRDMs.seen = zeros(length(times), size(Subjects,3));
-SubRDMs.unseen = zeros(length(times), size(Subjects,3));
 
-for sub = 1:size(Subjects,3)
+SubRDMs.(conditions{1}) = zeros(length(times), n_subjects);
+SubRDMs.(conditions{2}) = zeros(length(times), n_subjects);
+
+for sub = 1:n_subjects
     for t_idx = 1:length(times)
         tmp = squareform(Subjects(t_idx,:,sub));
         SubRDMs.seen(t_idx, sub) = nanmean(squareform(tmp(1:20,1:20)));
         SubRDMs.unseen(t_idx, sub) = nanmean(squareform(tmp(21:40,21:40)));
-        SubRDMs.difference(t_idx, sub) = SubRDMs.seen(t_idx, sub) - SubRDMs.unseen(t_idx, sub);
+        SubRDMs.difference(t_idx, sub) = SubRDMs.(conditions{1})(t_idx, sub) - SubRDMs.(conditions{2})(t_idx, sub);
         clear tmp
     end
     clear t_idx
 end
-%%
-for i_time = 1:length(times)
-    
-    [p,h,stats] = signrank(SubRDMs.seen(i_time,:), 1, 'tail','left');
-    Wilcoxon.seen.p(1,i_time) = p; Wilcoxon.seen.h(1,i_time) = h;
-    Wilcoxon.seen.zval(1,i_time) = stats.zval; Wilcoxon.seen.signedrank(1,i_time) = stats.signedrank;
-    clear p h stats
-    
-    [p,h,stats] = signrank(SubRDMs.unseen(i_time,:), 1, 'tail','left');
-    Wilcoxon.unseen.p(1,i_time) = p; Wilcoxon.unseen.h(1,i_time) = h;
-    Wilcoxon.unseen.zval(1,i_time) = stats.zval; Wilcoxon.unseen.signedrank(1,i_time) = stats.signedrank;
-    clear p h stats
-    
-    [p,h,stats] = signrank(SubRDMs.difference(i_time,:), 0, 'tail','left');
-    Wilcoxon.difference.p(1,i_time) = p; Wilcoxon.difference.h(1,i_time) = h;
-    Wilcoxon.difference.zval(1,i_time) = stats.zval; Wilcoxon.difference.signedrank(1,i_time) = stats.signedrank;
-    clear p h stats
-end
-%%
-colors = {[0.1725 0.6275 0.1725]; %green
-          [0.8382, 0.1529, 0.1569];% red
-          [0 0.2 0.4]}; %red-orange
-BarPos = [0.5, 0.47, 0.44];
 
-figure(round(100*rand(1)))
+figure
 for c = 1:length(conditions)
     mu = nanmean(SubRDMs.(conditions{c}),2);
-    SE = nanstd(SubRDMs.(conditions{c})')./sqrt(size(Subjects,3));
+    sem = nanstd(SubRDMs.(conditions{c}),1,2)./sqrt(size(Subjects,3));
     if c==1
-        y1 = shadedErrorBar(times, mu, SE, 'lineprops', {'color', colors{c}, 'LineWidth', 2});      
+        shadedErrorBar(times, mu, sem, 'lineprops', {'color', Colors{c}, 'LineWidth', 1.5});      
     elseif c==2
-         y2 = shadedErrorBar(times, mu, SE, 'lineprops', {'color', colors{c}, 'LineWidth', 2});   
+         shadedErrorBar(times, mu, sem, 'lineprops', {'color', Colors{c}, 'LineWidth', 1.5});   
     end
      hold on
 %     if ~isempty(times(ClusterInference.(conditions{c}).SigTimePoint))
@@ -215,11 +203,11 @@ for c = 1:length(conditions)
 %         'Markersize', 4, 'MarkerFaceColor', colors{c}, 'MarkerEdge', 'none');
 %     end
 
-
-     if ~isempty(times(Wilcoxon.(conditions{c}).h==1))
-         plot(times(Wilcoxon.(conditions{c}).h==1), BarPos(c), 'Marker', 's',...
-             'Markersize', 4, 'MarkerFaceColor', colors{c}, 'MarkerEdge', 'none');
-     end    
+% 
+%      if ~isempty(times(Wilcoxon.(conditions{c}).h==1))
+%          plot(times(Wilcoxon.(conditions{c}).h==1), BarPos(c), 'Marker', 's',...
+%              'Markersize', 4, 'MarkerFaceColor', colors{c}, 'MarkerEdge', 'none');
+%      end    
 end
     
 pbaspect([2 1.3 1])
@@ -230,4 +218,43 @@ plot(times, ones(1, length(times)), 'LineWidth', 1, 'Color', 'k', 'LineStyle', '
 line([0 0],ax.YLim,  'LineWidth', 1, 'Color', 'k')
 xlabel('time (sec)')
 ylabel('1 - Pearson''s r')
+
+clear ax BarPos c mu sem sub Subjects SubRDMs y1 y2 
 %% 2F
+
+%conditions = {'seen', 'unseen'};
+
+load('./Data/MEG_RSA_CategoryModel.mat', 'rho')
+load('./Data/MEG_RSA_CategoryModel_stats.mat', 'ClusterInference')
+
+BarPos = [0.09 0.085];
+
+figure
+for c = [2 1]%:length(conditions)
+    mu(c,:) = nanmean(rho.(conditions{c}),1);
+    SE(c,:) = nanstd(rho.(conditions{c}))./sqrt(n_subjects);
+    if c==1
+        y1 = shadedErrorBar(times, smooth(mu(c,:),1), SE(c,:), 'lineprops', {'color', Colors{c}, 'LineWidth', 1.5});      
+    elseif c==2
+         y2 = shadedErrorBar(times, smooth(mu(c,:),1), SE(c,:), 'lineprops', {'color', Colors{c}, 'LineWidth', 1.5});
+    end
+     hold on
+
+     if any(times(ClusterInference.(conditions{c}).SigTimePoint==1))
+        sig_time = times(ClusterInference.(conditions{c}).SigTimePoint==1);
+        plot(sig_time, BarPos(c), 'Marker', 's',...
+            'Markersize', 4, 'MarkerFaceColor', Colors{c}, 'MarkerEdge', 'none');
+     end
+end
+    
+pbaspect([2 1.3 1])
+ax= gca;
+ax.YLim = [-0.06, 0.09];
+ax.YTick = -0.04:0.04:0.08;
+plot(times, zeros(1, length(times)), 'LineWidth', 1, 'Color', 'k', 'LineStyle', '--')
+line([0 0],ax.YLim,  'LineWidth', 1, 'Color', 'k')
+line([sig_time(1) sig_time(1)],ax.YLim, 'LineStyle', '--', 'color', 'k')
+xlabel('Time (s) relative to stimulus onset', 'FontSize', 10, 'Fontweight', 'normal')
+ylabel('Spearman''s rho', 'FontSize', 10, 'Fontweight', 'normal')
+
+clear
