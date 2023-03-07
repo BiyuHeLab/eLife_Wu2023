@@ -1,3 +1,9 @@
+% Plot Figure 2 - figure supplement 1
+% MEG category decoding using high-contrast, clear images
+
+% @author: Yuan-hao Wu
+% Last update: 3/6/2023
+
 clear; clc
 load('./Data/MEG_decoding_Localizer.mat')
 load('./Data/MEG_decoding_Localizer_shuffled.mat')
