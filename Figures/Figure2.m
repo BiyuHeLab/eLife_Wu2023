@@ -1,17 +1,16 @@
 %% PLOT FIGURE 2 A-E
 % @author: Yuan-hao Wu
-% Last update: 3/6/2023
+% Last update: 3/7/2023
 clc; clear
 addpath('./helper functions')
 
 % General parameters
-times = -0.5:0.01:2;
 n_subjects = 24;
 times = -0.5:0.01:2;
 conditions = {'rec', 'unrec'};
 Colors = {[0.1725 0.6275 0.1725],...
-          [0.8382, 0.1529, 0.1569]}; 
-blue = [0 0.2 0.4];
+          [0.8382, 0.1529, 0.1569],...
+          [0 0.2 0.4]};
 %% Figure 2A Recognition outcome decoding
 load('./Data/MEG_decoding_Recognition.mat', 'accuracy')
 load('./Data/MEG_decoding_Recognition_stats.mat')
@@ -21,12 +20,12 @@ sem = nanstd(accuracy,1)./sqrt(n_subjects);
 
 figure;hold on
 shadedErrorBar(times,smooth(mu,3), smooth(sem,3), 'lineprops', {'color', ...
-    blue, 'LineWidth', 1.5});
+    Colors{3}, 'LineWidth', 1.5});
 
 if any(times(ClusterInference.SigTimePoint==1))
     sig_time = times(ClusterInference.SigTimePoint==1);
     plot(sig_time, 9, 'Marker', 's',...
-        'Markersize', 4, 'MarkerFaceColor', blue, 'MarkerEdge', 'none');
+        'Markersize', 4, 'MarkerFaceColor', Colors{3}, 'MarkerEdge', 'none');
 end
 ax = gca;
 ax.XLim = [-0.5 2];
@@ -41,7 +40,6 @@ xlabel('Time (sec) relative to stimulus onset', 'FontSize', 10, 'Fontweight', 'n
 ylabel('Decoding accuracy (%)', 'FontSize', 10, 'Fontweight', 'normal')
 
 clear ax accuracy ClusterInference mu sem sig_time
-
 %% 2B Category decoding
 rec = load('./Data/MEG_decoding_Object_R.mat', 'accuracy');
 unrec = load('./Data/MEG_decoding_Object_U.mat', 'accuracy');
@@ -164,50 +162,32 @@ for i = 1:length(latencies)
 end
 clear animal AvgData ax Colors face house i latencies map object s t
 %% 2E Across-image dissimilarity for recognized and unrecognized trials
-load('./Data/MEG_RDM.mat', 'Subjects')
-%load('./Data/MEG_decoding_Object_stats.mat', 'ClusterInference');
+load('./Data/MEG_RSA_MeanDissimilarity.mat')
+load('./Data/MEG_RSA_MeanDissimilarity_stats.mat', 'ClusterInference');
 
 conditions = {'seen', 'unseen', 'difference'};
-Colors = {[0.1725 0.6275 0.1725]; %green
-          [0.8382, 0.1529, 0.1569];% red
-          [0 0.2 0.4]}; %blue
 BarPos = [0.5, 0.47, 0.44];
-
-
-SubRDMs.(conditions{1}) = zeros(length(times), n_subjects);
-SubRDMs.(conditions{2}) = zeros(length(times), n_subjects);
-
-for sub = 1:n_subjects
-    for t_idx = 1:length(times)
-        tmp = squareform(Subjects(t_idx,:,sub));
-        SubRDMs.seen(t_idx, sub) = nanmean(squareform(tmp(1:20,1:20)));
-        SubRDMs.unseen(t_idx, sub) = nanmean(squareform(tmp(21:40,21:40)));
-        SubRDMs.difference(t_idx, sub) = SubRDMs.(conditions{1})(t_idx, sub) - SubRDMs.(conditions{2})(t_idx, sub);
-        clear tmp
-    end
-    clear t_idx
-end
 
 figure
 for c = 1:length(conditions)
-    mu = nanmean(SubRDMs.(conditions{c}),2);
-    sem = nanstd(SubRDMs.(conditions{c}),1,2)./sqrt(size(Subjects,3));
+    if c==3
+    else
+        mu = nanmean(SubRDMs.(conditions{c}),1);
+        sem = nanstd(SubRDMs.(conditions{c}))./sqrt(n_subjects);
+    end
+    
     if c==1
         shadedErrorBar(times, mu, sem, 'lineprops', {'color', Colors{c}, 'LineWidth', 1.5});      
     elseif c==2
          shadedErrorBar(times, mu, sem, 'lineprops', {'color', Colors{c}, 'LineWidth', 1.5});   
     end
      hold on
-%     if ~isempty(times(ClusterInference.(conditions{c}).SigTimePoint))
-%         plot(times(ClusterInference.(conditions{c}).SigTimePoint==1), BarPos(c), 'Marker', 's',...
-%         'Markersize', 4, 'MarkerFaceColor', colors{c}, 'MarkerEdge', 'none');
-%     end
+    if any(times(ClusterInference.(conditions{c}).SigTimePoint))
+       sig_time = times(ClusterInference.(conditions{c}).SigTimePoint);
+       plot(sig_time, BarPos(c), 'Marker', 's',...
+        'Markersize', 4, 'MarkerFaceColor', Colors{c}, 'MarkerEdge', 'none');
+    end
 
-% 
-%      if ~isempty(times(Wilcoxon.(conditions{c}).h==1))
-%          plot(times(Wilcoxon.(conditions{c}).h==1), BarPos(c), 'Marker', 's',...
-%              'Markersize', 4, 'MarkerFaceColor', colors{c}, 'MarkerEdge', 'none');
-%      end    
 end
     
 pbaspect([2 1.3 1])
@@ -216,21 +196,20 @@ ax.YLim = [0.4, 1.1];
 ax.YTick = ax.YLim(1):0.2:ax.YLim(2);
 plot(times, ones(1, length(times)), 'LineWidth', 1, 'Color', 'k', 'LineStyle', '--')
 line([0 0],ax.YLim,  'LineWidth', 1, 'Color', 'k')
-xlabel('time (sec)')
-ylabel('1 - Pearson''s r')
+line([sig_time(1) sig_time(1)],ax.YLim, 'LineStyle', '--', 'color', 'k')
 
-clear ax BarPos c mu sem sub Subjects SubRDMs y1 y2 
-%% 2F
+xlabel('Time (s) relative to stimulus onset', 'FontSize', 10, 'Fontweight', 'normal')
+ylabel('1 - Pearson''s r', 'FontSize', 10, 'Fontweight', 'normal')
 
-%conditions = {'seen', 'unseen'};
-
+clear ax BarPos c ClusterInference mu sem sig_time SubRDMs 
+%% 2F Correlations between category model and MEG RDMs
 load('./Data/MEG_RSA_CategoryModel.mat', 'rho')
 load('./Data/MEG_RSA_CategoryModel_stats.mat', 'ClusterInference')
 
 BarPos = [0.09 0.085];
 
 figure
-for c = [2 1]%:length(conditions)
+for c = [2 1]
     mu(c,:) = nanmean(rho.(conditions{c}),1);
     SE(c,:) = nanstd(rho.(conditions{c}))./sqrt(n_subjects);
     if c==1
