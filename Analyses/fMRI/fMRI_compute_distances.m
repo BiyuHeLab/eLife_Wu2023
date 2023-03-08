@@ -34,7 +34,7 @@ ROIs = {'V1', 'V2', 'V3', 'V4', 'loc_face', 'loc_animal', 'loc_house', 'loc_obje
     'deactive_STG_L', 'deactive_STG_R'};
 %% ************************************************************************
 for r = 1:length(ROIs)
-    for subj = 2%:length(SJs)
+    for subj = 1%:length(SJs)
         % load subject-specific pattern vectors for a  given ROI
         SubjData = fullfile(DataDir,['sub' SJs{subj}], 'Betas', [ROIs{r} '.mat']);
         SubjData = load(SubjData);
@@ -43,7 +43,7 @@ for r = 1:length(ROIs)
         % check if data exist. If not, continue with the next subject
         if iscell(SubjData) ~= 1
             AvgDistances.(ROIs{r}) = nan;
-            save(fullfile(DataDir, ['sub' SJs{subj}], TargetDir,...
+            save(fullfile(DataDir, ['sub' S/isilon/LFMI/VMdrive/YuanHao/HLTP_Fusion/fMRI/ROI_Data/sub01/Unnormalized_Distances/ControlAnalysisJs{subj}], TargetDir,...
                 'allAvg1-Pearson.mat'), 'AvgDistances')
             clear subjData
             disp('                                                             ')
