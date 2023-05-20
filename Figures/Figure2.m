@@ -160,14 +160,17 @@ for i = 1:length(latencies)
 
     clear avgRDM Y
 end
-clear animal AvgData ax Colors face house i latencies map object s t
+clear animal AvgData ax face house i latencies map object s t
 %% 2E Across-image dissimilarity for recognized and unrecognized trials
 load('./Data/MEG_RSA_MeanDissimilarity.mat')
 load('./Data/MEG_RSA_MeanDissimilarity_stats.mat', 'ClusterInference');
 
 conditions = {'seen', 'unseen', 'difference'};
 BarPos = [0.5, 0.47, 0.44];
-
+Colors = {[0.1725 0.6275 0.1725],...
+          [0.8382, 0.1529, 0.1569],...
+          [0 0.2 0.4]};
+      
 figure
 for c = 1:length(conditions)
     if c==3
