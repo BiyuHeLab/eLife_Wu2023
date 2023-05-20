@@ -3,6 +3,7 @@
 % the 40x40 group-average MEG RDM.
 
 clear; clc
+addpath('./helper functions')
 load('./Data/Fusion_MEG-MRI_Correlation.mat');
 load('./Data/Fusion_MEG-MRI_Correlation_ClusterInference.mat')
 ROIs = fieldnames(AvgRho);

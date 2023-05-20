@@ -118,8 +118,8 @@ for i, network in enumerate([EVC, VTC, SAL, DAN, FPCN, DMN]):
                          gridspec_kw={'width_ratios': [3,5]})    
     
     ax1= sns.pointplot(ax=axes[0], x='Half', y= 'Explained variance',
-        hue='Model', estimator=np.median, alpha=0.5, ci=None,
-        errwidth=1, capsize=0.1, marker = ".", data= mdata)
+        hue='Model', estimator=np.median, ci=None,
+        errwidth=1, capsize=0.1, data= mdata)
     
     #ax1.spines['left'].set_position(('outward', 5))
     ax1.yaxis.set_ticks_position('left')

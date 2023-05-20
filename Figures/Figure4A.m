@@ -7,7 +7,7 @@ elseif strcmp(Model, 'TwoState') ==1
     bar_color = [1 0.4980 0.0549];
      YAxisLocation = 'left';
 end
-
+addpath('./helper functions')
 S = load(['./Data/Fusion_' Model 'Model_ClusterInference.mat']);
 
 ROIs = {'V1', 'V2', 'V3', 'placeholder1',...

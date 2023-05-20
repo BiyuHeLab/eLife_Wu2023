@@ -10,6 +10,7 @@
 % =========================================================================
 
 clear; clc
+addpath('./helper functions')
 Models = {'Recognition', 'TwoState'};
 
 load('./Data/Fusion_Commonality.mat');

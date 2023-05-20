@@ -5,6 +5,7 @@
 % Last update: 3/6/2023
 
 clear; clc
+addpath('./helper functions')
 load('./Data/MEG_decoding_Localizer.mat')
 load('./Data/MEG_decoding_Localizer_shuffled.mat')
 analysis = {'1vs2', '1vs3', '1vs4', '2vs3', '2vs4', '3vs4'};

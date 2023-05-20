@@ -122,8 +122,8 @@ for n_splits in [10,20]:
     
         fig, ax = plt.subplots(figsize=(9,1.5))    
         ax= sns.pointplot(x='Split', y= 'Explained variance',
-                      hue='Model', estimator=np.median, alpha=0.5, errorbar= ('pi', 50),
-                     errwidth=None, capsize=0.1, marker = None, data= mdata)
+                      hue='Model', estimator=np.median, errorbar= ('pi', 50),
+                     errwidth=None, capsize=0.1, data= mdata)
         
         ax.spines['left'].set_position(('outward', 5))
         ax.yaxis.set_ticks_position('left')
@@ -169,11 +169,11 @@ for i, network in enumerate([EVC, VTC, SAL, DAN, FPCN, DMN]):
     data = data.sort_values(['ROI'])   
     fig, ax = plt.subplots(figsize=(2, 2))    
     ax = sns.pointplot(x='Split', y = 'Explained variance', hue = 'ROI',
-                       estimator=np.median, alpha=0.5, ci=None, errwidth=1, 
-                       capsize=0.1,linestyles='-', marker=None, data = data)
+                       estimator=np.median, ci=None, errwidth=1, 
+                       capsize=0.1,linestyles='-', data = data)
     ax = sns.pointplot(x='Split', y = 'Explained variance',
-        hue = 'ROI', estimator=np.median, alpha=0.5, ci=None,
-        errwidth=1, capsize=0.1, linestyles='--', marker = None,
+        hue = 'ROI', estimator=np.median, ci=None,
+        errwidth=1, capsize=0.1, linestyles='--',
         data = df_all_poststimulus[(df_all_poststimulus['ROI'].isin(network)) & \
                                    (df_all_poststimulus['Model']=='TwoState')])                
     ax.spines['top'].set_visible(False)
