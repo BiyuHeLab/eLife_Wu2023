@@ -1,5 +1,6 @@
 # HLTP_Fusion_Wu2022
 
+<<<<<<< HEAD
 Analysis scripts and codes for reproducing figures in the manuscript Spatiotemporal neural dynamics of objeccts recognition under uncertainty in humans
 
 Analysis was originally performed on a machine running Redhat Linux v7.8, Matlab R2017a, and Spyder 5.0.5 (Python 3.8).
@@ -80,3 +81,7 @@ Codes to output the presented results
 * Create_ModelVectors.m: subfunction for creating model RDMs
 * compute_commonality.m: subfunction for executing commonality analysis
 * correlation.m: subfunction for computing semipartial correlations (@author: Martin Hebart (2018, eLife))
+=======
+Submission code at: [https://github.com/BiyuHeLab/HLTP_Fusion_Wu2022/tree/submission](https://github.com/BiyuHeLab/eLife_Wu2022/tree/submission)
+The submission branch will be listed here at publication time. 
+>>>>>>> main
