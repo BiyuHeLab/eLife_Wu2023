@@ -81,7 +81,4 @@ Codes to output the presented results
 * Create_ModelVectors.m: subfunction for creating model RDMs
 * compute_commonality.m: subfunction for executing commonality analysis
 * correlation.m: subfunction for computing semipartial correlations (@author: Martin Hebart (2018, eLife))
-=======
-Submission code at: [https://github.com/BiyuHeLab/HLTP_Fusion_Wu2022/tree/submission](https://github.com/BiyuHeLab/eLife_Wu2022/tree/submission)
-The submission branch will be listed here at publication time. 
->>>>>>> main
+
