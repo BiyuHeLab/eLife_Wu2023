@@ -18,8 +18,8 @@ matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['svg.fonttype'] = 'none'
 
 # import .mat file to Python 
-RootDir = '/isilon/LFMI/VMdrive/YuanHao/HLTP_Fusion/eLife_Wu2023/'
-imgs_dict = mat73.loadmat(RootDir + 'Figures/Data/n_trials_per_image.mat')
+#RootDir = '/isilon/LFMI/VMdrive/YuanHao/HLTP_Fusion/eLife_Wu2023/'
+imgs_dict = mat73.loadmat('./Data/n_trials_per_image.mat')
 nTrials =  imgs_dict['n_trials']
 del imgs_dict
 
